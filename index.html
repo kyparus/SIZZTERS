@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<title >SIZZTERS</title>
+
+
+	<link rel="stylesheet" type="text/css" media="screen" href="./css/style.css">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+
+<body>
+	<H2 align="center" style="letter-spacing: 100px; font-size: x-large">SIZZTERS</H2>
+	<div id="container" align="center" >
+		<form method="post" action="./slider.html" >
+			<div id="header">
+				<input class="field" name="q" value="" placeholder="Поиск на видеохостинге" size="150" style="height: 26px">
+				<input src="./imgs/search.png" type="image" id="imgsearch">
+			</div>
+		</form>
+			
+			<div align="right" >
+
+				<a href="#">Вход</a>
+			</div>
+
+				<div id="videos" align="left" style="margin-left: 17%"></div>
+
+		<script type="text/javascript">
+			var ws = new WebSocket("ws://localhost:8080");
+			console.log("Socket created");
+			var msg = {
+				id:          0,
+				type:  "video",
+				subtype:"feed",
+				low:         0,
+				high:        3
+			};
+
+			ws.onopen = function (event) {
+				console.log("Socket opened", event.data);
+				ws.send(JSON.stringify(msg));
+			};
+
+
+			ws.onmessage = function (msg) {
+
+				console.log("Message received :", msg.data);
+				var json = JSON.parse( msg.data);
+
+
+				if(json.satus === 1){
+					console.log("Message" + json.id + " received with error:", msg.data);
+					return 0;
+				}
+
+				for(i = 0;i<json.data.length;i++) {
+					var videoForm = '<section  style="background-color: white; margin-right: 50%"> <h2>' + json.data[i].title + '<br></h2>';
+					videoForm += '<a href="./video.html?video_id=' + json.data[i].id +'" target="_blank">';
+					videoForm += '<img class="preview" src="./imgs/previews/0.jpg"> </a>';
+					videoForm += '<p>' + json.data[i].desc + '</p>';
+					videoForm += '<img src="./imgs/like.png"  id="like"> '+json.data[i].likes +'</img>';
+					videoForm += '<img src="./imgs/dislike.png" id="dislike"> '+json.data[i].dislikes +'</img></section>';
+					document.getElementById("videos").innerHTML += videoForm;
+				}
+
+			};
+		</script>
+
+
+
+	</div>
+</body>
+</html>

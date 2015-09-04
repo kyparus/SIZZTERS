@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Видеохостинг</title>
+	<link rel="stylesheet" type="text/css" media="screen" href="./css/style.css">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+
+<body>
+	<div id="container">
+		<div id="header">
+			<form method="post" action="#">
+				<input class="field" name="q" value="" placeholder="Поиск на видеохостинге" size="150"> 
+				<input src="./imgs/search.png" type="image" id="imgsearch">
+			</form>
+		</div>
+		
+		<div id="board">
+			<div align="center">
+				<img src="./imgs/film.jpg">
+				<form action="/processing/pauth" method="post" name="form">
+					<h2>Авторизация</h2>
+					<table>
+						<tr>
+							<td>
+								<div class="field">
+									<label>Логин:</label>
+									<div class="field">
+										<input type="text" name="login" value="">
+									</div>
+								</div>
+							</td>
+						</tr>
+						
+						<tr>
+							<td>
+								<div class="field">
+									<label>Пароль:</label>
+									<div class="field">
+										<input type="password" name="pass" value="">
+									</div>
+								</div>
+							</td>
+						</tr>
+					</table>
+					
+					<br>
+					<div class="submit">
+						<button type="button">Вход</button>
+					</div>
+                    <br>
+					<div class="submit">
+						<button type="submit"><a href="reg.html">Зарегистрироваться</a></button>
+                        
+					</div>
+					<br>
+					<a href="#">Забыли пароль</a>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

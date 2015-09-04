@@ -1,0 +1,124 @@
+<html>
+<head>
+	<title>Видеохостинг</title>
+	<link rel="stylesheet" type="text/css" media="screen" href="./css/style.css">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+
+<body>
+<br><H2 align="center" style="letter-spacing: 100px; font-size: x-large">SIZZTERS</H2>
+	<div id="container">
+		<div id="header">
+			<form method="post" action="#">
+				<input class="field" name="q" value="" placeholder="Поиск на видеохостинге" size="220" align="center" style="height: 26px">
+				<input src="./imgs/search.png" type="image" id="imgsearch">
+			</form>
+		</div>
+
+		<script type="text/javascript">
+			var ws = new WebSocket("ws://localhost:8080");
+			console.log("Socket created");
+			var str = window.location.href;
+			var index = str.search("video_id=");
+			var cur_video_id;
+			if(index === -1) cur_video_id = -1;
+			 else {
+				cur_video_id = str.substr(index + 9);
+			}
+
+			ws.onopen = function (event) {
+				var msg = {
+					id:          1,
+					type:  "video",
+					subtype:"info",
+					video_id: cur_video_id
+				};
+				console.log("Socket opened, send : " + event.name, JSON.stringify(msg));
+				//ws.send(JSON.stringify(msg));
+			};
+
+			ws.onmessage = function (msg) {
+
+				console.log("Message received :", msg.data);
+				var json = JSON.parse( msg.data);
+
+
+				if(json.status === 1){
+					console.log("Message" + json.id + " received with error:", msg.data);
+					return 0;
+				}
+				if(json.data[0].id === 7){
+					var inner;
+
+					for(i = 0; i < json.data.length; i++){
+						//inner = (i + 3)*2;
+						inner = '<br><form style="border-style: groove; width: 66%" ><p style="color: #B8BEBE">added: <span style="font-style: italic">';
+						inner += json.data[i].added;
+					    inner += '</span><p><h4>';
+						inner += json.data[i].message;
+						inner += '</h4></form>';
+						document.getElementById("comments").innerHTML += inner;
+					}
+
+
+				} else {
+					document.getElementById("name").innerHTML = json.data[0].title;
+					document.getElementById("desc").innerHTML += json.data[0].desc;
+					document.getElementById("time").innerHTML += json.data[0].added;
+					document.getElementById("views").innerHTML += json.data[0].views;
+					document.getElementById("likes").innerHTML += json.data[0].likes;
+					document.getElementById("dislikes").innerHTML += json.data[0].dislikes;
+				}
+
+			};
+
+			var opened = 0;
+			function sendComReq(){
+
+				if(opened === 0) {
+					var msg = {
+						id: 1,
+						type: "comment",
+						subtype: "video",
+						video_id: cur_video_id,
+						low: 0,
+						high: 10
+					};
+					ws.send(JSON.stringify(msg));
+					opened = 1;
+				} else {
+					document.getElementById("comments").innerHTML ="";
+					opened = 0;
+				}
+			}
+		</script>
+
+		<div id="board">
+			<div align="center">
+				<h2 id="name"></h2>
+				<iframe width="560" height="315" src="https://www.youtube.com/embed/jR1N16S_xME" frameborder="0" allowfullscreen></iframe>
+
+				<br>
+				<h4 align="left" > <time id="time" style="margin-left: 25%" >Uploaded: </time> <span style="margin-left: 25%" id="views" >Views: </span> </h4>
+
+				<div id="desc" align="left" style="margin-left: 25%; margin-right: 25%">Description: </div><br>
+
+				<div id="likedislike" align="right" style="margin-right: 25%">
+					<input src="./imgs/like.png" id="like" type="image"><span id="likes" ></span>
+					<input src="./imgs/dislike.png" id="dislike" type="image" ><span id="dislikes"></span>
+				</div>
+
+				<div id="linksBox">
+				<button onclick="sendComReq()" style="height: 40px; width: auto" >Комментарии</button>
+				</div>
+
+				<div id="comments" ALIGN="left" style="margin-left: 25%">
+
+				</div>
+
+				</div>
+			</div>
+	</div>
+
+</body>
+</html>

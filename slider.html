@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Видеохостинг</title>
+	<link rel="stylesheet" type="text/css" media="screen" href="./css/style.css">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
+<link rel="stylesheet" href="./css/slider.css">
+<script src="./js/slider.js"></script>
+</head>
+
+<body>
+	<div id="container">
+		<form method="post" action="#">
+			<div id="header">
+				<input class="field" name="q" value="" placeholder="Поиск на видеохостинге" size="150"> 
+				<input src="./imgs/search.png" type="image" id="imgsearch">
+			</div>
+		</form>
+			
+			<div align="right">
+				<a href="./auth.html">Вход</a>
+			</div>
+		
+		<div id="board">
+			<div class="gallery js-slider" data-slider-options='{ "wrapAround": "true", "cellAlign": "center", "contain": "true" }'>
+				<div class="gallery-cell"><a href="./video.html" target="_blank"><img src="./imgs/previews/0.jpg" alt=""></a></div>
+				<div class="gallery-cell"><a href="./video.html" target="_blank"><img src="./imgs/previews/1.jpg" alt=""></a></div>
+				<div class="gallery-cell"><a href="./video.html" target="_blank"><img src="./imgs/previews/2.jpg" alt=""></a></div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
